@@ -1,8 +1,5 @@
-import org.w3c.dom.Document
-import java.io.File
 import java.util.logging.Level
 import java.util.logging.LogManager
-import javax.xml.parsers.DocumentBuilderFactory
 
 internal val l = LogManager.getLogManager().getLogger("").apply { level = Level.ALL }
 internal fun i(tag: String, msg: String) {
@@ -13,39 +10,95 @@ interface Interfaz {
     fun existeLibro(idLibro: String): Boolean
     fun infoLibro(idLibro: String): Map<String, Any>
 }
-class gestionLibrosIU {
 
+class gestionLibrosIUEspaniol() : InterfazGestionLibros {
+    override fun introducirID(): String {
+        println("Introduzca un ID: ")
+        val idLibro = readln()
+        return idLibro
+    }
+
+    override fun libroExiste(idLibro: String) {
+        return println("El libro $idLibro existe!")
+    }
+
+    override fun libroNoExiste(idLibro: String) {
+        return println("El libro $idLibro NO existe!")
+    }
+
+    override fun informacionLibro(infoLibro: Map<String, Any>) {
+        return println("La información sobre es la siguiente\n$infoLibro")
+    }
+
+    override fun noInformacionLibro() {
+        return println("No se encontró información sobre el libro")
+    }
 }
 
-class gestionLibros(val cat: Interfaz) {
+class gestionLibrosIUIngles() : InterfazGestionLibros {
+    override fun introducirID(): String {
+        println("Enter an ID:")
+        val idLibro = readln()
+        return idLibro
+    }
+
+    override fun libroExiste(idLibro: String) {
+        return println("The book $idLibro exists!")
+    }
+
+    override fun libroNoExiste(idLibro: String) {
+        return println("The book $idLibro does NOT exist!")
+    }
+
+    override fun informacionLibro(infoLibro: Map<String, Any>) {
+        return println("Information about is the following\n$infoLibro")
+    }
+
+    override fun noInformacionLibro() {
+        return println("No information found about the book")
+    }
+}
+
+interface InterfazGestionLibros {
+    fun introducirID(): String
+    fun libroExiste(idLibro: String)
+    fun libroNoExiste(idLibro: String)
+    fun informacionLibro(infoLibro: Map<String, Any>)
+    fun noInformacionLibro()
+}
+
+class gestionLibros(val cat: Interfaz, val libro: InterfazGestionLibros) {
 
     fun preguntarPorUnLibro() {
-        println("Introduzca un ID: ")
-        var idLibro = readln()
+        val idLibro = libro.introducirID()
         if (cat.existeLibro(idLibro))
-            println("El libro $idLibro existe!")
+            libro.libroExiste(idLibro)
         else
-            println("El libro $idLibro NO existe!")
+            libro.libroNoExiste(idLibro)
     }
 
     fun mostrarInfoDeUnLibro() {
-        println("Introduzca un ID: ")
-        var idLibro = readln()
-        var infoLibro = cat.infoLibro(idLibro)
+        val idLibro = libro.introducirID()
+        val infoLibro = cat.infoLibro(idLibro)
         if (infoLibro.isNotEmpty())
-            println("La información sobre es la siguiente\n$infoLibro")
+            libro.informacionLibro(infoLibro)
         else
-            println("No se encontró información sobre el libro")
+            libro.noInformacionLibro()
     }
 
 }
+
 fun main() {
-    var portatil = "src/main/kotlin/Catalog.xml"
+    val portatil = "src/main/kotlin/Catalog.xml"
     //var casa = "/home/usuario/Documentos/workspace/IdeaProjects/IESRA-DAM/ejercicios/src/main/kotlin/un5/eje5_4/Catalog.xml"
 
-    val gestorDeLibros = gestionLibros(CatalogoLibrosXML(portatil))
+    val gestorDeLibros = gestionLibros(CatalogoLibrosXML(portatil), gestionLibrosIUEspaniol())
+    val gestorDeLibrosIngles = gestionLibros(CatalogoLibrosXML(portatil), gestionLibrosIUIngles())
     gestorDeLibros.preguntarPorUnLibro()
     gestorDeLibros.mostrarInfoDeUnLibro()
+
+    gestorDeLibrosIngles.preguntarPorUnLibro()
+    gestorDeLibrosIngles.mostrarInfoDeUnLibro()
 
 }
 
