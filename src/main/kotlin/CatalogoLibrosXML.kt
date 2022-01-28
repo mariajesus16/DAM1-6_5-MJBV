@@ -7,7 +7,7 @@ import java.io.File
 import java.time.LocalDate
 import javax.xml.parsers.DocumentBuilderFactory
 
-class CatalogoLibrosXML(private val cargador: String) {
+class CatalogoLibrosXML(private val cargador: String) :Interfaz {
 
     companion object {
         val l = KotlinLogging.logger("LOG")
@@ -50,7 +50,7 @@ class CatalogoLibrosXML(private val cargador: String) {
     *
     * @return  Devuelve true si existe, `false` en caso contrario.
     * */
-    fun existeLibro(idLibro: String): Boolean {
+    override fun existeLibro(idLibro: String): Boolean {
         var existe: Boolean
         if (idLibro.isNullOrBlank())
             existe = false
@@ -74,7 +74,7 @@ class CatalogoLibrosXML(private val cargador: String) {
       *
       * @return  Devuelve true si existe, `false` en caso contrario.
       * */
-    fun infoLibro(idLibro: String): Map<String, Any> {
+    override fun infoLibro(idLibro: String): Map<String, Any> {
         var m = mutableMapOf<String, Any>()
         if (!idLibro.isNullOrBlank())
             xmlDoc?.let {
