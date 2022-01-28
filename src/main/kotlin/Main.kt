@@ -39,9 +39,8 @@ class gestionLibros(val cat: Interfaz) {
     }
 
 }
-
 fun main() {
-    var portatil = "/home/edu/IdeaProjects/IESRA-DAM-Prog/ejercicios/src/main/kotlin/un5/eje5_4/Catalog.xml"
+    var portatil = "src/main/kotlin/Catalog.xml"
     //var casa = "/home/usuario/Documentos/workspace/IdeaProjects/IESRA-DAM/ejercicios/src/main/kotlin/un5/eje5_4/Catalog.xml"
 
     val gestorDeLibros = gestionLibros(CatalogoLibrosXML(portatil))
