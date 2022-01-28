@@ -9,17 +9,10 @@ internal fun i(tag: String, msg: String) {
     l.info("[$tag] - $msg")
 }
 
-
-fun main() {
-    var portatil = "/home/edu/IdeaProjects/IESRA-DAM-Prog/ejercicios/src/main/kotlin/un5/eje5_4/Catalog.xml"
-    //var casa = "/home/usuario/Documentos/workspace/IdeaProjects/IESRA-DAM/ejercicios/src/main/kotlin/un5/eje5_4/Catalog.xml"
-
-    val gestorDeLibros = gestionLibros()
-    gestorDeLibros.preguntarPorUnLibro()
-    gestorDeLibros.mostrarInfoDeUnLibro()
-
+interface Interfaz {
+    fun existeLibro(idLibro: String): Boolean
+    fun infoLibro(idLibro: String): Map<String, Any>
 }
-
 class gestionLibrosIU {
 
 }
@@ -47,7 +40,15 @@ class gestionLibros(val cat: Interfaz) {
 
 }
 
-interface Interfaz {
-    fun existeLibro(idLibro: String): Boolean {}
-    fun infoLibro(idLibro: String): Map<String, Any> {}
+fun main() {
+    var portatil = "/home/edu/IdeaProjects/IESRA-DAM-Prog/ejercicios/src/main/kotlin/un5/eje5_4/Catalog.xml"
+    //var casa = "/home/usuario/Documentos/workspace/IdeaProjects/IESRA-DAM/ejercicios/src/main/kotlin/un5/eje5_4/Catalog.xml"
+
+    val gestorDeLibros = gestionLibros(CatalogoLibrosXML(portatil))
+    gestorDeLibros.preguntarPorUnLibro()
+    gestorDeLibros.mostrarInfoDeUnLibro()
+
 }
+
+
+
